@@ -1,4 +1,4 @@
-FROM haskell:8
+FROM haskell:7
 
 MAINTAINER James Gregory <james@jagregory.com>
 
@@ -7,7 +7,7 @@ MAINTAINER James Gregory <james@jagregory.com>
 ENV PANDOC_VERSION "1.17.2"
 
 # install pandoc
-RUN cabal update && cabal install pandoc-${PANDOC_VERSION}
+RUN cabal update && cabal install pandoc-${PANDOC_VERSION} pandoc-include pandoc-citeproc
 
 # install latex packages
 RUN apt-get update -y \
@@ -18,7 +18,8 @@ RUN apt-get update -y \
     texlive-latex-extra \
     texlive-fonts-extra \
     texlive-bibtex-extra \
-    fontconfig
+    fontconfig && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /source
 
